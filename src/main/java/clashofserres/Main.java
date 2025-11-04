@@ -1,20 +1,63 @@
 package clashofserres;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.Locale;
+import java.util.Scanner;
+
+import clashofserres.calc.IBaseCalcClass;
+import clashofserres.calc.AddCalcClass;
+import clashofserres.calc.SubtractCalcClass;
+import clashofserres.calc.MultCalcClass;
+import clashofserres.calc.DivCalcClass;
+
 public class Main
 {
-	public static void main(String[] args)
-	{
-		//TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-		// to see how IntelliJ IDEA suggests fixing it.
-		System.out.printf("Hello and welcome!");
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        scanner.useLocale(Locale.US);
 
-		for (int i = 1; i <= 5; i++)
-		{
-			//TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-			// for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-			System.out.println("i = " + i);
-		}
-	}
+        System.out.print("Enter first number: ");
+        double a = scanner.nextDouble();
+
+        System.out.print("Enter second number: ");
+        double b = scanner.nextDouble();
+
+        System.out.print("Enter operation (add, subtract, mult, div or +, -, *, /): ");
+        String op = scanner.next().toLowerCase();
+
+        IBaseCalcClass calculator;
+
+        switch (op)
+        {
+            case "add":
+            case "+":
+                calculator = new AddCalcClass();
+                break;
+            case "subtract":
+            case "sub":
+            case "-":
+                calculator = new SubtractCalcClass();
+                break;
+            case "mult":
+            case "multiply":
+            case "*":
+            case "x":
+                calculator = new MultCalcClass();
+                break;
+            case "div":
+            case "divide":
+            case "/":
+                calculator = new DivCalcClass();
+                break;
+            default:
+                System.out.println("Unknown operation: " + op);
+                scanner.close();
+                return;
+        }
+
+        double result = calculator.calculate(a, b);
+        System.out.println("Result: " + result);
+
+        scanner.close();
+    }
 }
