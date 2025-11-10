@@ -16,48 +16,88 @@ public class Main
         Scanner scanner = new Scanner(System.in);
         scanner.useLocale(Locale.US);
 
-        System.out.print("Enter first number: ");
-        double a = scanner.nextDouble();
 
-        System.out.print("Enter second number: ");
-        double b = scanner.nextDouble();
+        // Αυτή η μεταβλητή θα κρατάει το αποτέλεσμα της τελευταίας πράξης.
+        double current_result = 0.0;
 
-        System.out.print("Enter operation (add, subtract, mult, div or +, -, *, /): ");
-        String op = scanner.next().toLowerCase();
+        // Μια βοηθητική μεταβλητή για να ξέρουμε αν είναι η πρώτη πράξη
+        boolean isFirstOperation = true;
 
-        IBaseCalcClass calculator;
+        System.out.println("Calculator is ON. Type 'C' to clear or 'exit' to quit.");
 
-        switch (op)
+        // Ο υπολογιστής τρέχει τώρα σε ένα συνεχές loop
+        while (true)
         {
-            case "add":
-            case "+":
-                calculator = new AddCalcClass();
+            double a; // Ο πρώτος τελεστής
+
+            // Αν δεν είναι η πρώτη πράξη, ο πρώτος αριθμός (a)
+            // Αλλιώς είναι *αυτόματα* το προηγούμενο αποτέλεσμα.
+            if (isFirstOperation) {
+                System.out.print("Enter first number: ");
+                a = scanner.nextDouble();
+            } else {
+                a = current_result;
+                System.out.println("First number (from last result): " + a);
+            }
+
+            System.out.print("Enter operation (+, -, *, /) or 'C' (Clear) or 'exit': ");
+            String op = scanner.next().toLowerCase();
+
+            // Αν δοθεί exit σταματάει τη λούπα
+            if (op.equals("exit")) {
                 break;
-            case "subtract":
-            case "sub":
-            case "-":
-                calculator = new SubtractCalcClass();
-                break;
-            case "mult":
-            case "multiply":
-            case "*":
-            case "x":
-                calculator = new MultCalcClass();
-                break;
-            case "div":
-            case "divide":
-            case "/":
-                calculator = new DivCalcClass();
-                break;
-            default:
-                System.out.println("Unknown operation: " + op);
-                scanner.close();
-                return;
+            }
+            // Αν δοθεί c κάνει clear το προηγούμενο αποτέλεσμα και ξεκινάει απο την αρχή
+            if (op.equals("c")) {
+                isFirstOperation = true;
+                current_result = 0.0;
+                System.out.println("--- Calculator Cleared ---");
+                continue;
+            }
+
+            IBaseCalcClass calculator;
+
+            switch (op)
+            {
+                case "add":
+                case "+":
+                    calculator = new AddCalcClass();
+                    break;
+                case "subtract":
+                case "sub":
+                case "-":
+                    calculator = new SubtractCalcClass();
+                    break;
+                case "mult":
+                case "multiply":
+                case "*":
+                case "x":
+                    calculator = new MultCalcClass();
+                    break;
+                case "div":
+                case "divide":
+                case "/":
+                    calculator = new DivCalcClass();
+                    break;
+                default:
+                    System.out.println("Unknown operation: " + op);
+                    continue;
+            }
+
+            System.out.print("Enter second number: ");
+            double b = scanner.nextDouble();
+
+
+            current_result = calculator.calculate(a, b);
+
+            // Μετά την πρώτη επιτυχημένη πράξη, το 'isFirstOperation' είναι πάντα false
+            isFirstOperation = false;
+
+            System.out.println("Result: " + current_result);
+            System.out.println("--------------------");
         }
 
-        double result = calculator.calculate(a, b);
-        System.out.println("Result: " + result);
-
+        System.out.println("Calculator OFF.");
         scanner.close();
     }
 }
