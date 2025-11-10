@@ -87,13 +87,23 @@ public class Main
             System.out.print("Enter second number: ");
             double b = scanner.nextDouble();
 
-
-            current_result = calculator.calculate(a, b);
-
             // Μετά την πρώτη επιτυχημένη πράξη, το 'isFirstOperation' είναι πάντα false
             isFirstOperation = false;
+            try
+            {
+                current_result = calculator.calculate(a, b);
 
-            System.out.println("Result: " + current_result);
+                System.out.println("Result: " + current_result);
+            }
+            catch (ArithmeticException e)
+            {
+                System.out.println("ArithmeticException: " + e.getMessage());
+            }
+            catch (Exception e)
+            {
+                System.out.println("Exception: " + e.getMessage());
+            }
+
             System.out.println("--------------------");
         }
 
