@@ -6,14 +6,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DivCalcClassTest {
 
-    // Test 10: Standard Division
+    // Test: Standard Division
     @Test
     void testStandardDivision() {
         DivCalcClass calculator = new DivCalcClass();
         assertEquals(5.0, calculator.calculate(10.0, 2.0), "10 / 2 should be 5.0");
     }
 
-    // Test 13: Division by Zero (Expected: Positive Infinity)
+    // Test: Division by Zero (Expected: Positive Infinity)
     @Test
     void testDivisionByZero() {
         DivCalcClass calculator = new DivCalcClass();
@@ -22,7 +22,7 @@ public class DivCalcClassTest {
         }, "Division by zero must throw an ArithmeticException");
     }
 
-    // Test 14: Zero Divided by Zero (Expected: NaN)
+    // Test: Zero Divided by Zero (Expected: NaN)
     @Test
     void testZeroDividedByZero_ThrowsException() {
         DivCalcClass calculator = new DivCalcClass();
