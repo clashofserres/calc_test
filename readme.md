@@ -44,7 +44,7 @@ To **SmartCalc** είναι ένα επιστημονικό κομπιουτερ
 'exit'
 ```
 ---
-#  ‍💼Project Manager 
+#  ‍💼Project Manager
 * [@nikosxrist](https://github.com/nikosxrist)
 # 🤝 Συμμετέχοντες
 * [@Far0yk](https://github.com/Far0yk)
