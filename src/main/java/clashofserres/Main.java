@@ -8,6 +8,10 @@ import clashofserres.calc.AddCalcClass;
 import clashofserres.calc.SubtractCalcClass;
 import clashofserres.calc.MultCalcClass;
 import clashofserres.calc.DivCalcClass;
+import clashofserres.calc.ModCalcClass;
+import clashofserres.calc.SquareCalcClass;
+import clashofserres.calc.PowerCalcClass;
+
 
 public class Main
 {
@@ -50,7 +54,7 @@ public class Main
                 System.out.println("First number (from last result): " + a);
             }
 
-            System.out.print("Enter operation (+, -, *, /) or 'C' (Clear) or 'exit':");
+            System.out.print("Enter operation (+, -, *, /, %, √, ^) or 'C' (Clear) or 'exit':");
             String op = scanner.next().toLowerCase();
 
             // Αν δοθεί exit σταματάει τη λούπα.
@@ -89,6 +93,21 @@ public class Main
                 case "/":
                     calculator = new DivCalcClass();
                     break;
+                case "mod":
+                case "%":
+                    calculator = new ModCalcClass();
+                    break;
+                case "sqrt":
+                case "√":
+                    calculator = new SquareCalcClass();
+
+                    break;
+
+                case "pow":
+                case "^":
+                    calculator = new PowerCalcClass();
+                    break;
+
                 default:
                     System.out.println("Unknown operation: " + op);
                     continue;

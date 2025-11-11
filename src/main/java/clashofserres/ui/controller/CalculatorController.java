@@ -45,6 +45,7 @@ public class CalculatorController {
                 case "C" -> {
                     display.clear();
                     model.setValue(0);
+                    model.setOperator("");
                     start = true;
                 }
 

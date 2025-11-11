@@ -29,7 +29,9 @@ public class CalculatorModel {
             case "-": return new SubtractCalcClass();
             case "*": return new MultCalcClass();
             case "/": return new DivCalcClass();
-            // TODO: √, % and ^ logic.
+            case "%": return new ModCalcClass();
+            case "^": return new PowerCalcClass();
+            case "√": return new SquareCalcClass();
         }
         return null;
     }
