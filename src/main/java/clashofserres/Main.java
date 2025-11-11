@@ -13,6 +13,16 @@ public class Main
 {
     public static void main(String[] args)
     {
+        if (args.length > 0 && args[0].equalsIgnoreCase("-NoUI")) {
+
+            System.out.println("Running in command-line mode...");
+        }
+        else
+        {
+            CalculatorUI.launchUI(args);
+            return;
+        }
+
         Scanner scanner = new Scanner(System.in);
         scanner.useLocale(Locale.US);
 
@@ -40,10 +50,10 @@ public class Main
                 System.out.println("First number (from last result): " + a);
             }
 
-            System.out.print("Enter operation (+, -, *, /) or 'C' (Clear) or 'exit': ");
+            System.out.print("Enter operation (+, -, *, /) or 'C' (Clear) or 'exit':");
             String op = scanner.next().toLowerCase();
 
-            // Αν δοθεί exit σταματάει τη λούπα
+            // Αν δοθεί exit σταματάει τη λούπα.
             if (op.equals("exit")) {
                 break;
             }
