@@ -4,13 +4,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import clashofserres.calc.IBaseCalcClass;
-import clashofserres.calc.AddCalcClass;
-import clashofserres.calc.SubtractCalcClass;
-import clashofserres.calc.MultCalcClass;
-import clashofserres.calc.DivCalcClass;
-import clashofserres.calc.ModCalcClass;
-import clashofserres.calc.SquareCalcClass;
-import clashofserres.calc.PowerCalcClass;
+import clashofserres.calc.CalculatorFactory;
 
 
 public class Main
@@ -69,48 +63,11 @@ public class Main
                 continue;
             }
 
-            IBaseCalcClass calculator;
-
-            switch (op)
-            {
-                case "add":
-                case "+":
-                    calculator = new AddCalcClass();
-                    break;
-                case "subtract":
-                case "sub":
-                case "-":
-                    calculator = new SubtractCalcClass();
-                    break;
-                case "mult":
-                case "multiply":
-                case "*":
-                case "x":
-                    calculator = new MultCalcClass();
-                    break;
-                case "div":
-                case "divide":
-                case "/":
-                    calculator = new DivCalcClass();
-                    break;
-                case "mod":
-                case "%":
-                    calculator = new ModCalcClass();
-                    break;
-                case "sqrt":
-                case "√":
-                    calculator = new SquareCalcClass();
-
-                    break;
-
-                case "pow":
-                case "^":
-                    calculator = new PowerCalcClass();
-                    break;
-
-                default:
-                    System.out.println("Unknown operation: " + op);
-                    continue;
+            IBaseCalcClass calculator = CalculatorFactory.createCalculator(op);
+            
+            if (calculator == null) {
+                System.out.println("Unknown operation: " + op);
+                continue;
             }
 
             System.out.print("Enter second number: ");
