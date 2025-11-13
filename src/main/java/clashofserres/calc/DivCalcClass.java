@@ -1,13 +1,13 @@
 package clashofserres.calc;
-import clashofserres.calc.IBaseCalcClass;
 
-public class DivCalcClass  implements IBaseCalcClass{
+public class DivCalcClass implements IBaseCalcClass {
+    private static final double EPSILON = 1e-10;
+    
     @Override
-    public double calculate(double a, double b)
-    {
-        if(b==0)
+    public double calculate(double a, double b) {
+        if (Math.abs(b) < EPSILON) {
             throw new ArithmeticException("Division by zero is not allowed.");
-
-        return a/b;
+        }
+        return a / b;
     }
 }

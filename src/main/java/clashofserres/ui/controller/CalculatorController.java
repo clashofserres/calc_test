@@ -1,12 +1,17 @@
 package clashofserres.ui.controller;
 
 import clashofserres.Main;
+import clashofserres.calc.CalculatorFactory;
 import clashofserres.ui.model.CalculatorModel;
 import clashofserres.ui.view.CalculatorView;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class CalculatorController {
+    private static final String ERROR_PREFIX = "ERROR";
+    private static final String CLEAR_BUTTON = "C";
+    private static final String EQUALS_BUTTON = "=";
+    
     private final CalculatorModel model;
     private final CalculatorView view;
     private boolean start = true;
@@ -28,69 +33,89 @@ public class CalculatorController {
             System.out.println("\n--- Switched to Console Mode ---");
             Stage stage = (Stage) view.getRoot().getScene().getWindow();
             stage.close();
-            Main.main(new String[]{"-NoUI"}); // Relaunch CLI version
+            Main.main(new String[]{"-NoUI"});
         });
     }
 
     private void handleButton(String text) {
         var display = view.getDisplay();
 
-        if (display.getText().startsWith("ERROR")) {
-            display.clear();
-            start = true;
+        if (display.getText().startsWith(ERROR_PREFIX)) {
+            clearDisplay();
+            return;
         }
 
         try {
             switch (text) {
-                case "C" -> {
-                    display.clear();
-                    model.setValue(0);
-                    model.setOperator("");
-                    start = true;
-                }
-
-                // TODO add logic for
-                case "+", "-", "*", "/", "√", "^", "%" -> {
-                    if (display.getText().isEmpty()) return;
-                    model.setValue(Double.parseDouble(display.getText()));
-                    model.setOperator(text);
-                    start = true;
-                }
-
-                case "=" -> {
-                    double input = Double.parseDouble(display.getText());
-                    double result = model.calculate(input);
-
-                    String formatted = (result == (long) result)
-                            ? String.valueOf((long) result)
-                            : String.valueOf(result);
-
-                    display.setText(formatted);
-                    model.setOperator("");
-                    start = true;
-                }
-
+                case CLEAR_BUTTON -> handleClear();
+                case EQUALS_BUTTON -> handleEquals();
                 default -> {
-                    if (start) {
-                        display.clear();
-                        start = false;
+                    if (CalculatorFactory.isSupportedOperation(text)) {
+                        handleOperator(text);
+                    } else {
+                        handleInput(text);
                     }
-                    display.appendText(text);
                 }
             }
-        }
-        catch (NumberFormatException nfe) {
-            display.setText("ERROR: Invalid number");
-            start = true;
-        }
-        catch (ArithmeticException ae) {
-            display.setText("ERROR: " + ae.getMessage());
-            start = true;
-        }
-        catch (Exception e) {
-            display.setText("ERROR: Unexpected");
+        } catch (NumberFormatException e) {
+            showError("Invalid number");
+        } catch (ArithmeticException e) {
+            showError(e.getMessage());
+        } catch (Exception e) {
+            showError("Unexpected error");
             e.printStackTrace();
-            start = true;
         }
+    }
+
+    private void handleClear() {
+        var display = view.getDisplay();
+        display.clear();
+        model.setValue(0);
+        model.setOperator("");
+        start = true;
+    }
+
+    private void handleOperator(String operator) {
+        var display = view.getDisplay();
+        if (display.getText().isEmpty()) {
+            return;
+        }
+        model.setValue(Double.parseDouble(display.getText()));
+        model.setOperator(operator);
+        start = true;
+    }
+
+    private void handleEquals() {
+        var display = view.getDisplay();
+        double input = Double.parseDouble(display.getText());
+        double result = model.calculate(input);
+        display.setText(formatResult(result));
+        model.setOperator("");
+        start = true;
+    }
+
+    private void handleInput(String text) {
+        var display = view.getDisplay();
+        if (start) {
+            display.clear();
+            start = false;
+        }
+        display.appendText(text);
+    }
+
+    private void clearDisplay() {
+        view.getDisplay().clear();
+        start = true;
+    }
+
+    private void showError(String message) {
+        view.getDisplay().setText(ERROR_PREFIX + ": " + message);
+        start = true;
+    }
+
+    private String formatResult(double result) {
+        return (result == (long) result)
+                ? String.valueOf((long) result)
+                : String.valueOf(result);
     }
 }

@@ -1,7 +1,7 @@
 package clashofserres.ui.model;
 
-
-import clashofserres.calc.*;
+import clashofserres.calc.IBaseCalcClass;
+import clashofserres.calc.CalculatorFactory;
 
 public class CalculatorModel {
     private double memory = 0;
@@ -14,26 +14,12 @@ public class CalculatorModel {
         value = 0;
     }
 
-    public double calculate(double input) throws Exception {
-        IBaseCalcClass calcClass = getCalcClass();
+    public double calculate(double input) {
+        IBaseCalcClass calcClass = CalculatorFactory.createCalculator(operator);
         if (calcClass != null) {
-           // System.out.println("calcClass: " + calcClass.calculate(memory, value));
             return calcClass.calculate(memory, input);
         }
         return input;
-    }
-    private IBaseCalcClass getCalcClass() {
-        switch (operator)
-        {
-            case "+": return new AddCalcClass();
-            case "-": return new SubtractCalcClass();
-            case "*": return new MultCalcClass();
-            case "/": return new DivCalcClass();
-            case "%": return new ModCalcClass();
-            case "^": return new PowerCalcClass();
-            case "√": return new SquareCalcClass();
-        }
-        return null;
     }
 
     public void setValue(double v) { value = v; }
